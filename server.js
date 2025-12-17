@@ -5,7 +5,9 @@ const app = express();
 
 // middlewares
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173','https://jpr-public.vercel.app'], // Vite dev server
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://jpr-public.vercel.app', process.env.BASE_URL]
+    : ['http://localhost:3000', 'http://localhost:5173', 'https://jpr-public.vercel.app'],
   credentials: true
 }));
 app.use(express.json());      // parse JSON payloads
