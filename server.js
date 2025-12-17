@@ -5,7 +5,7 @@ const app = express();
 
 // middlewares
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173'], // Vite dev server
+  origin: ['http://localhost:3000', 'http://localhost:5173','https://jpr-public.vercel.app'], // Vite dev server
   credentials: true
 }));
 app.use(express.json());      // parse JSON payloads
