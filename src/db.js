@@ -19,13 +19,13 @@ if (process.env.DATABASE_URL) {
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
   };
 } else {
-  // Use individual environment variables
+  // Use individual environment variables - prioritize Railway vars in production
   dbConfig = {
-    host: process.env.DB_HOST || process.env.MYSQLHOST,
-    port: process.env.DB_PORT || process.env.MYSQLPORT || 3306,
-    user: process.env.DB_USER || process.env.MYSQLUSER,
-    password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD,
-    database: process.env.DB_NAME || process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE,
+    host: process.env.MYSQLHOST || process.env.DB_HOST,
+    port: process.env.MYSQLPORT || process.env.DB_PORT || 3306,
+    user: process.env.MYSQLUSER || process.env.DB_USER,
+    password: process.env.MYSQL_ROOT_PASSWORD || process.env.MYSQLPASSWORD || process.env.DB_PASSWORD,
+    database: process.env.MYSQL_DATABASE || process.env.MYSQLDATABASE || process.env.DB_NAME,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -40,11 +40,11 @@ console.log('Database Configuration:');
 if (process.env.DATABASE_URL) {
   console.log('Using DATABASE_URL:', process.env.DATABASE_URL.replace(/:[^:@]*@/, ':***@'));
 } else {
-  console.log('Host:', process.env.DB_HOST || process.env.MYSQLHOST || 'NOT SET');
-  console.log('Port:', process.env.DB_PORT || process.env.MYSQLPORT || 3306);
-  console.log('User:', process.env.DB_USER || process.env.MYSQLUSER || 'NOT SET');
-  console.log('Database:', process.env.DB_NAME || process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || 'NOT SET');
-  console.log('Password set:', !!(process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD));
+  console.log('Host:', process.env.MYSQLHOST || process.env.DB_HOST || 'NOT SET');
+  console.log('Port:', process.env.MYSQLPORT || process.env.DB_PORT || 3306);
+  console.log('User:', process.env.MYSQLUSER || process.env.DB_USER || 'NOT SET');
+  console.log('Database:', process.env.MYSQL_DATABASE || process.env.MYSQLDATABASE || process.env.DB_NAME || 'NOT SET');
+  console.log('Password set:', !!(process.env.MYSQL_ROOT_PASSWORD || process.env.MYSQLPASSWORD || process.env.DB_PASSWORD));
 }
 
 // Test database connection
