@@ -1,0 +1,81 @@
+-- NEWS / EVENTS
+CREATE TABLE news (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  summary VARCHAR(500) NULL,
+  content TEXT NOT NULL,
+  category VARCHAR(100) NULL,
+  event_date DATE NULL,
+  image_url VARCHAR(500) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- NEWS IMAGES (multiple images per news item)
+CREATE TABLE news_images (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  news_id INT UNSIGNED NOT NULL,
+  image_url VARCHAR(500) NOT NULL,
+  sort_order INT DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (news_id) REFERENCES news(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- PUBLICATIONS
+CREATE TABLE publications (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  type VARCHAR(100),
+  title VARCHAR(255) NOT NULL,
+  journal VARCHAR(255),
+  pub_date DATE,
+  authors TEXT,
+  abstract TEXT,
+  link VARCHAR(500)
+);
+
+-- PROJECTS
+CREATE TABLE projects (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  period VARCHAR(20) NOT NULL,
+  project_title VARCHAR(255) NOT NULL,
+  client VARCHAR(255),
+  location VARCHAR(255),
+  summary TEXT NOT NULL,
+  category VARCHAR(100),
+  is_published TINYINT(1) NOT NULL DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+-- CAREER / JOBS
+CREATE TABLE careers (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  location VARCHAR(255),
+  job_type VARCHAR(100),
+  description TEXT,
+  posted_on DATE
+);
+
+-- CONTACT MESSAGES (optional storage)
+CREATE TABLE contact_messages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255),
+  email VARCHAR(255),
+  subject VARCHAR(255),
+  message TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- USERS (employees / admin)
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role ENUM('employee','admin') DEFAULT 'employee'
+);
