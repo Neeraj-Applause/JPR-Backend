@@ -9,6 +9,7 @@ console.log('🔍 Environment:', {
   MYSQL_HOST: process.env.MYSQL_HOST,
   MYSQL_USER: process.env.MYSQL_USER,
   MYSQL_DATABASE: process.env.MYSQL_DATABASE,
+  MYSQL_PUBLIC_URL: process.env.MYSQL_PUBLIC_URL ? 'Available' : 'Not Available',
   BASE_URL: process.env.BASE_URL,
   RAILWAY_ENV: process.env.RAILWAY_ENVIRONMENT || 'local',
 });
@@ -47,13 +48,32 @@ module.exports = {
   BASE_URL: getBaseUrl(),
   PORT: process.env.PORT || 5000,
   JWT_SECRET: process.env.JWT_SECRET,
-  DB_CONFIG: {
-    host: process.env.MYSQL_HOST,
-    port: process.env.MYSQL_PORT || 3306,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_ROOT_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-  },
+  DB_CONFIG: (() => {
+    // For Railway, use MYSQL_PUBLIC_URL if individual variables aren't available
+    if (process.env.MYSQL_PUBLIC_URL && (!process.env.MYSQL_HOST)) {
+      try {
+        const url = new URL(process.env.MYSQL_PUBLIC_URL);
+        return {
+          host: url.hostname,
+          port: parseInt(url.port) || 3306,
+          user: url.username,
+          password: url.password,
+          database: url.pathname.slice(1), // Remove leading slash
+        };
+      } catch (error) {
+        console.error('❌ Failed to parse MYSQL_PUBLIC_URL:', error);
+      }
+    }
+    
+    // Use individual variables (for local development)
+    return {
+      host: process.env.MYSQL_HOST,
+      port: process.env.MYSQL_PORT || 3306,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_ROOT_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
+    };
+  })(),
   SMTP_CONFIG: {
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
