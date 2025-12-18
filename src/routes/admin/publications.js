@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../../db");
 const { authRequired, adminOnly } = require("../../middleware/authMiddleware");
-const uploadPdf = require("../../middleware/uploadPublicationPdf");
+const { uploadPublicationPdf } = require("../../middleware/cloudinaryUpload");
 const { BASE_URL } = require("../../utils/config");
 
 
@@ -107,7 +107,7 @@ router.get("/:id", async (req, res) => {
    ✅ ADMIN: CREATE PUBLICATION
    POST /api/admin/publications
 ========================================================= */
-router.post("/", uploadPdf.single("pdf"), async (req, res) => {
+router.post("/", uploadPublicationPdf.single("pdf"), async (req, res) => {
   console.log("Creating publication with body:", req.body);
   console.log("PDF file received:", req.file ? req.file.filename : "No file");
   
@@ -121,9 +121,8 @@ router.post("/", uploadPdf.single("pdf"), async (req, res) => {
     is_published = 1,
   } = req.body;
 
-  const pdfPath = req.file
-    ? `${BASE_URL}/uploads/publications/${req.file.filename}`
-    : null;
+  // Cloudinary URL is already complete - no need to add BASE_URL
+  const pdfPath = req.file ? req.file.path : null;
     
   console.log("PDF path:", pdfPath);
 
@@ -164,7 +163,7 @@ router.post("/", uploadPdf.single("pdf"), async (req, res) => {
    ✅ ADMIN: UPDATE PUBLICATION
    PUT /api/admin/publications/:id
 ========================================================= */
-router.put("/:id", uploadPdf.single("pdf"), async (req, res) => {
+router.put("/:id", uploadPublicationPdf.single("pdf"), async (req, res) => {
   console.log("Updating publication ID:", req.params.id);
   console.log("Update body:", req.body);
   console.log("PDF file received:", req.file ? req.file.filename : "No file");
@@ -179,9 +178,8 @@ router.put("/:id", uploadPdf.single("pdf"), async (req, res) => {
     is_published,
   } = req.body;
 
-  const pdfPath = req.file
-    ? `${BASE_URL}/uploads/publications/${req.file.filename}`
-    : null;
+  // Cloudinary URL is already complete - no need to add BASE_URL
+  const pdfPath = req.file ? req.file.path : null;
     
   console.log("PDF path:", pdfPath);
 

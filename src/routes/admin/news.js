@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../../db");
-const upload = require("../../middleware/upload");
+const { uploadNewsImages } = require("../../middleware/cloudinaryUpload");
 const { authRequired, adminOnly } = require("../../middleware/authMiddleware");
 const { BASE_URL } = require("../../utils/config");
 
@@ -115,13 +115,12 @@ router.get("/:id", async (req, res) => {
    ✅ ADMIN: CREATE NEWS (with images)
    POST /api/admin/news
 ========================================================= */
-router.post("/", upload.array("images", 10), async (req, res) => {
+router.post("/", uploadNewsImages.array("images", 10), async (req, res) => {
   const { title, summary, content, category, event_date } = req.body;
   const files = req.files || [];
 
-  const imagePaths = files.map(
-    (file) => `${BASE_URL}/uploads/news/${file.filename}`
-  );
+  // Cloudinary URLs are already complete - no need to add BASE_URL
+  const imagePaths = files.map((file) => file.path);
 
   try {
     const [result] = await pool.query(
@@ -158,13 +157,12 @@ router.post("/", upload.array("images", 10), async (req, res) => {
    ✅ ADMIN: UPDATE NEWS (replace images)
    PUT /api/admin/news/:id
 ========================================================= */
-router.put("/:id", upload.array("images", 10), async (req, res) => {
+router.put("/:id", uploadNewsImages.array("images", 10), async (req, res) => {
   const { title, summary, content, category, event_date } = req.body;
   const files = req.files || [];
 
-  const imagePaths = files.map(
-    (file) => `${BASE_URL}/uploads/news/${file.filename}`
-  );
+  // Cloudinary URLs are already complete - no need to add BASE_URL
+  const imagePaths = files.map((file) => file.path);
 
   try {
     const [result] = await pool.query(
