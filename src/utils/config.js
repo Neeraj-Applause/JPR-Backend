@@ -4,15 +4,13 @@ if (!process.env.RAILWAY_ENVIRONMENT) {
   require('dotenv').config();
 }
 
-// Debug: Log available database environment variables
-console.log('🔍 Available DB Environment Variables:', {
-  DB_HOST: process.env.DB_HOST,
+// Debug: Log environment info
+console.log('🔍 Environment:', {
   MYSQL_HOST: process.env.MYSQL_HOST,
-  DB_USER: process.env.DB_USER,
   MYSQL_USER: process.env.MYSQL_USER,
-  DB_NAME: process.env.DB_NAME,
   MYSQL_DATABASE: process.env.MYSQL_DATABASE,
   BASE_URL: process.env.BASE_URL,
+  RAILWAY_ENV: process.env.RAILWAY_ENVIRONMENT || 'local',
 });
 
 const getBaseUrl = () => {
@@ -50,11 +48,11 @@ module.exports = {
   PORT: process.env.PORT || 5000,
   JWT_SECRET: process.env.JWT_SECRET,
   DB_CONFIG: {
-    host: process.env.DB_HOST || process.env.MYSQL_HOST,
-    port: process.env.DB_PORT || 3306,
-    user: process.env.DB_USER || process.env.MYSQL_USER,
-    password: process.env.DB_PASSWORD || process.env.MYSQL_ROOT_PASSWORD,
-    database: process.env.DB_NAME || process.env.MYSQL_DATABASE,
+    host: process.env.MYSQL_HOST,
+    port: process.env.MYSQL_PORT || 3306,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_ROOT_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
   },
   SMTP_CONFIG: {
     host: process.env.SMTP_HOST,
