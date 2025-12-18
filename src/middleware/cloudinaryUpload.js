@@ -2,6 +2,13 @@ const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('cloudinary').v2;
 
+// Debug: Check environment variables
+console.log('🔍 Cloudinary Environment Variables:', {
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME ? 'Set' : 'Missing',
+  api_key: process.env.CLOUDINARY_API_KEY ? 'Set' : 'Missing',
+  api_secret: process.env.CLOUDINARY_API_SECRET ? 'Set' : 'Missing',
+});
+
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,12 +18,19 @@ cloudinary.config({
 
 // Test Cloudinary connection
 const testCloudinaryConnection = async () => {
+  // Check if all required variables are present
+  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+    console.error('❌ Missing Cloudinary environment variables');
+    console.log('📝 Required: CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET');
+    return;
+  }
+
   try {
     const result = await cloudinary.api.ping();
     console.log('✅ Cloudinary connected successfully:', result.status);
   } catch (error) {
-    console.error('❌ Cloudinary connection failed:', error.message);
-    console.log('📝 Make sure CLOUDINARY_* environment variables are set');
+    console.error('❌ Cloudinary connection failed:', error.message || error);
+    console.log('🔧 Check your Cloudinary credentials in Railway environment variables');
   }
 };
 

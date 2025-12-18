@@ -19,6 +19,19 @@ app.get('/api', (req, res) => {
   res.json({ message: 'API is working' });
 });
 
+// Cloudinary test endpoint
+app.get('/api/test-cloudinary', (req, res) => {
+  const hasCloudinary = !!(process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET);
+  res.json({
+    cloudinary: {
+      configured: hasCloudinary,
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME ? 'Set' : 'Missing',
+      api_key: process.env.CLOUDINARY_API_KEY ? 'Set' : 'Missing',
+      api_secret: process.env.CLOUDINARY_API_SECRET ? 'Set' : 'Missing',
+    }
+  });
+});
+
 const path = require("path");
 
 // routes
