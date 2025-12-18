@@ -118,9 +118,9 @@ router.post("/", upload.array("images", 10), async (req, res) => {
   const { title, summary, content, category, event_date } = req.body;
   const files = req.files || [];
 
-  const baseUrl = process.env.BASE_URL || "http://localhost:5000";
+  const { BASE_URL } = require('../../utils/config');
   const imagePaths = files.map(
-    (file) => `${baseUrl}/uploads/news/${file.filename}`
+    (file) => `${BASE_URL}/uploads/news/${file.filename}`
   );
 
   try {
@@ -162,9 +162,9 @@ router.put("/:id", upload.array("images", 10), async (req, res) => {
   const { title, summary, content, category, event_date } = req.body;
   const files = req.files || [];
 
-  const baseUrl = process.env.BASE_URL || "http://localhost:5000";
+  const { BASE_URL } = require('../../utils/config');
   const imagePaths = files.map(
-    (file) => `${baseUrl}/uploads/news/${file.filename}`
+    (file) => `${BASE_URL}/uploads/news/${file.filename}`
   );
 
   try {

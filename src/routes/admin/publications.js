@@ -120,9 +120,9 @@ router.post("/", uploadPdf.single("pdf"), async (req, res) => {
     is_published = 1,
   } = req.body;
 
-  const baseUrl = process.env.BASE_URL || "http://localhost:5000";
+  const { BASE_URL } = require('../../utils/config');
   const pdfPath = req.file
-    ? `${baseUrl}/uploads/publications/${req.file.filename}`
+    ? `${BASE_URL}/uploads/publications/${req.file.filename}`
     : null;
     
   console.log("PDF path:", pdfPath);
@@ -179,9 +179,9 @@ router.put("/:id", uploadPdf.single("pdf"), async (req, res) => {
     is_published,
   } = req.body;
 
-  const baseUrl = process.env.BASE_URL || "http://localhost:5000";
+  const { BASE_URL } = require('../../utils/config');
   const pdfPath = req.file
-    ? `${baseUrl}/uploads/publications/${req.file.filename}`
+    ? `${BASE_URL}/uploads/publications/${req.file.filename}`
     : null;
     
   console.log("PDF path:", pdfPath);
