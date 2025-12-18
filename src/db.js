@@ -1,12 +1,21 @@
 const mysql = require('mysql2/promise');
-require('dotenv').config();
+const { DB_CONFIG } = require('./utils/config');
+
+// Add debugging to see what config is being used
+console.log('🔍 Database Configuration:', {
+  host: DB_CONFIG.host,
+  port: DB_CONFIG.port,
+  user: DB_CONFIG.user,
+  database: DB_CONFIG.database,
+  // Don't log password for security
+});
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT || 3306,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: DB_CONFIG.host,
+  port: DB_CONFIG.port,
+  user: DB_CONFIG.user,
+  password: DB_CONFIG.password,
+  database: DB_CONFIG.database,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0

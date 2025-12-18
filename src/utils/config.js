@@ -1,6 +1,17 @@
 // Configuration utility for handling different environments
 require('dotenv').config();
 
+// Debug: Log available database environment variables
+console.log('🔍 Available DB Environment Variables:', {
+  DB_HOST: process.env.DB_HOST,
+  MYSQL_HOST: process.env.MYSQL_HOST,
+  DB_USER: process.env.DB_USER,
+  MYSQL_USER: process.env.MYSQL_USER,
+  DB_NAME: process.env.DB_NAME,
+  MYSQL_DATABASE: process.env.MYSQL_DATABASE,
+  BASE_URL: process.env.BASE_URL,
+});
+
 const getBaseUrl = () => {
   // If BASE_URL is explicitly set, use it
   if (process.env.BASE_URL) {
