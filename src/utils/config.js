@@ -12,6 +12,8 @@ console.log('🔍 Environment:', {
   MYSQL_PUBLIC_URL: process.env.MYSQL_PUBLIC_URL ? 'Available' : 'Not Available',
   BASE_URL: process.env.BASE_URL,
   RAILWAY_ENV: process.env.RAILWAY_ENVIRONMENT || 'local',
+  RAILWAY_STATIC_URL: process.env.RAILWAY_STATIC_URL,
+  RAILWAY_PUBLIC_DOMAIN: process.env.RAILWAY_PUBLIC_DOMAIN,
 });
 
 const getBaseUrl = () => {
@@ -28,6 +30,11 @@ const getBaseUrl = () => {
   // Alternative Railway detection
   if (process.env.RAILWAY_ENVIRONMENT) {
     return `https://jpr-backend-production.up.railway.app`;
+  }
+  
+  // Check for Railway public domain
+  if (process.env.RAILWAY_PUBLIC_DOMAIN) {
+    return `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`;
   }
   
   // For other cloud platforms, try to detect from common environment variables
