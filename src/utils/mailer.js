@@ -1,25 +1,22 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: false, // true for 465, false for 587
+  service: 'gmail', // Use Gmail service instead of manual SMTP
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
   // Railway-specific optimizations
-  connectionTimeout: 60000, // 60 seconds
-  greetingTimeout: 30000,   // 30 seconds
-  socketTimeout: 60000,     // 60 seconds
+  connectionTimeout: 60000,
+  greetingTimeout: 30000,
+  socketTimeout: 60000,
   // Retry configuration
   pool: true,
-  maxConnections: 5,
-  maxMessages: 100,
-  // TLS configuration for better compatibility
+  maxConnections: 1, // Reduced for Gmail
+  maxMessages: 10,   // Reduced for Gmail
+  // TLS configuration
   tls: {
-    rejectUnauthorized: false, // Allow self-signed certificates
-    ciphers: 'SSLv3'
+    rejectUnauthorized: false
   }
 });
 
