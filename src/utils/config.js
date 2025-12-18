@@ -1,5 +1,8 @@
 // Configuration utility for handling different environments
-require('dotenv').config();
+// Only load .env file in development (not in Railway production)
+if (!process.env.RAILWAY_ENVIRONMENT) {
+  require('dotenv').config();
+}
 
 // Debug: Log available database environment variables
 console.log('🔍 Available DB Environment Variables:', {
@@ -21,6 +24,11 @@ const getBaseUrl = () => {
   // For Railway deployment, use the Railway URL
   if (process.env.RAILWAY_STATIC_URL) {
     return `https://${process.env.RAILWAY_STATIC_URL}`;
+  }
+  
+  // Alternative Railway detection
+  if (process.env.RAILWAY_ENVIRONMENT) {
+    return `https://jpr-backend-production.up.railway.app`;
   }
   
   // For other cloud platforms, try to detect from common environment variables
