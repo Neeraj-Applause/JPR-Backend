@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require("../../db");
 const { authRequired, adminOnly } = require("../../middleware/authMiddleware");
 const uploadPdf = require("../../middleware/uploadPublicationPdf");
+const { BASE_URL } = require("../../utils/config");
 
 
 router.use(authRequired, adminOnly);
@@ -120,7 +121,6 @@ router.post("/", uploadPdf.single("pdf"), async (req, res) => {
     is_published = 1,
   } = req.body;
 
-  const { BASE_URL } = require('../../utils/config');
   const pdfPath = req.file
     ? `${BASE_URL}/uploads/publications/${req.file.filename}`
     : null;
@@ -179,7 +179,6 @@ router.put("/:id", uploadPdf.single("pdf"), async (req, res) => {
     is_published,
   } = req.body;
 
-  const { BASE_URL } = require('../../utils/config');
   const pdfPath = req.file
     ? `${BASE_URL}/uploads/publications/${req.file.filename}`
     : null;

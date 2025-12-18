@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require("../../db");
 const upload = require("../../middleware/upload");
 const { authRequired, adminOnly } = require("../../middleware/authMiddleware");
+const { BASE_URL } = require("../../utils/config");
 
 router.use(authRequired, adminOnly);
 
@@ -118,7 +119,6 @@ router.post("/", upload.array("images", 10), async (req, res) => {
   const { title, summary, content, category, event_date } = req.body;
   const files = req.files || [];
 
-  const { BASE_URL } = require('../../utils/config');
   const imagePaths = files.map(
     (file) => `${BASE_URL}/uploads/news/${file.filename}`
   );
@@ -162,7 +162,6 @@ router.put("/:id", upload.array("images", 10), async (req, res) => {
   const { title, summary, content, category, event_date } = req.body;
   const files = req.files || [];
 
-  const { BASE_URL } = require('../../utils/config');
   const imagePaths = files.map(
     (file) => `${BASE_URL}/uploads/news/${file.filename}`
   );

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db");
+const { BASE_URL } = require("../utils/config");
 
 /* =========================================================
    ✅ GET ALL NEWS (with images, search, sort, pagination)
@@ -151,7 +152,6 @@ router.post("/", upload.array("images", 10), async (req, res) => {
   const { title, summary, content, category, event_date } = req.body;
   const files = req.files || [];
 
-  const { BASE_URL } = require('../utils/config');
   const imagePaths = files.map(
     (file, i) => `${BASE_URL}/uploads/news/${file.filename}`
   );
@@ -202,7 +202,6 @@ router.put("/:id", upload.array("images", 10), async (req, res) => {
   const { title, summary, content, category, event_date } = req.body;
   const files = req.files || [];
 
-  const { BASE_URL } = require('../utils/config');
   const imagePaths = files.map(
     (file) => `${BASE_URL}/uploads/news/${file.filename}`
   );
